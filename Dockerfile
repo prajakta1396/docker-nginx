@@ -1,11 +1,7 @@
-# Use the official nginx base image
 FROM nginx
 
-# Copy the hello.txt file to /var/www/
-COPY hello.txt /var/www/
+COPY hello.txt /var/www/    # Copy the hello.txt file to /var/www/
 
-# Expose port 80 for web traffic
 EXPOSE 80
 
-# Start nginx server
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["nginx", "-g", "daemon off;"]    # Start nginx server
