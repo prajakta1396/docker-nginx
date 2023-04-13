@@ -24,8 +24,9 @@ jobs:
     - name: Install Docker on EC2 server
       run: |
         sudo yum update -y
-        sudo amazon-linux-extras install docker -y
-        sudo service docker start
+        sudo yum install docker -y
+        sudo systemctl start docker
+        
     - name: Deploy Docker image on EC2 server
       run: |
         #sudo docker pull nginximage
