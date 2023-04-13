@@ -1,4 +1,4 @@
-name: Deploy Docker image to AWS
+name: Deploy nginx image 
 
 on:
   push:
@@ -13,7 +13,7 @@ jobs:
     - uses: actions/checkout@v2
     
     - name: Build Docker image
-      run: docker build -t nginximage:${{ github.sha }} .
+      run: docker build -t nginximage:latest .
       
     - name: Install AWS CLI
       uses: aws-actions/configure-aws-credentials@v1
@@ -28,5 +28,5 @@ jobs:
         sudo service docker start
     - name: Deploy Docker image on EC2 server
       run: |
-        sudo docker pull nginximage:${{ github.sha }}
+        #sudo docker pull nginximage
         sudo docker run -d --name nginxweb1 -p 8085:80 -v nginx_web:/var/www/ nginximage
