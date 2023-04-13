@@ -1,0 +1,33 @@
+name: Deploy Docker image to AWS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: centos
+    steps:
+    - name: check the code
+    - uses: actions/checkout@v2
+    
+    - name: Build Docker image
+      run: docker build -t nginximage:${{ github.sha }} .
+      
+    - name: Install AWS CLI
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ap-south-1
+    - name: Install Docker on EC2 server
+      run: |
+        sudo yum update -y
+        sudo amazon-linux-extras install docker -y
+        sudo service docker start
+        sudo usermod -a -G docker ec2-user
+    - name: Deploy Docker image on EC2 server
+      run: |
+        sudo docker pull nginximage:${{ github.sha }}
+        sudo docker run -p 80:80 -itd nginximage:${{ github.sha }}
