@@ -29,4 +29,4 @@ jobs:
     - name: Deploy Docker image on EC2 server
       run: |
         sudo docker pull nginximage:${{ github.sha }}
-        sudo docker run -p 8085:80 -itd nginximage:${{ github.sha }}
+        sudo docker run -d --name nginxweb1 -p 8085:80 -v nginx_web:/var/www/ nginximage
